@@ -1,33 +1,19 @@
-<table class="default">
+<table class="default tp_tasktable">
     <thead>
         <tr>
             <th><?= _("Aufgabe") ?></th>
             <th><?= _("Verantwortlich") ?></th>
             <th><?= _("Erledigt") ?></th>
             <th><?= _("Fällig bis") ?></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         <? if (count($tasks)) : ?>
             <? foreach ($tasks as $task) : ?>
-                <tr>
-                    <td>
-                        <?= htmlReady($task['name']) ?>
-                    </td>
-                    <td>
-                        <? if ($task['assigned_to_user']) : ?>
-                            <?= htmlReady(get_fullname($task['assigned_to_user'])) ?>
-                        <? endif ?>
-                    </td>
-                    <td>
-                        <input readonly type="range" value="<?= htmlReady($task['finished']) ?>" max="100">
-                    </td>
-                    <td>
-                        <? if ($task['deadline']) : ?>
-                        <?= date("G:h d.n.Y", $task['deadline']) ?>
-                        <? endif ?>
-                    </td>
-                </tr>
+                <? if (!$task->statusgruppe_id) : ?>
+                    <?= $this->render_partial("tasks/_task_row.php", array('task' => $task)) ?>
+                <? endif ?>
             <? endforeach ?>
         <? else : ?>
             <tr>
@@ -37,6 +23,34 @@
             </tr>
         <? endif ?>
     </tbody>
+    <? foreach ($statusgruppen as $statusgruppe) : ?>
+        <?
+        $relevant = false;
+        foreach ($tasks as $task) {
+            if ($task['statusgruppe_id'] === $statusgruppe->getId()) {
+                $relevant = true;
+                break;
+            }
+        }
+        ?>
+        <? if ($relevant) : ?>
+        <tbody>
+            <tr class="nohover caption">
+                <td colspan="100">
+                    <h2>
+                        <?= Icon::create("group2", "inactive")->asImg(25, array('class' => "text-bottom")) ?>
+                        <?= htmlReady(_("Gruppe").": ".$statusgruppe['name']) ?>
+                    </h2>
+                </td>
+            </tr>
+            <? foreach ($tasks as $task) : ?>
+                <? if ($task->statusgruppe_id === $statusgruppe->getId()) : ?>
+                    <?= $this->render_partial("tasks/_task_row.php", array('task' => $task)) ?>
+                <? endif ?>
+            <? endforeach ?>
+        </tbody>
+        <? endif ?>
+    <? endforeach ?>
 </table>
 
 <?php
@@ -44,9 +58,9 @@
 $actions = new ActionsWidget();
 $actions->addLink(
     _("Aufgabe erstellen"),
-    PluginEngine::getURL($plugin, array(), "coursetasks/edit"),
+    PluginEngine::getURL($plugin, array('range_type' => "course", 'range_id' => Context::get()->id), "tasks/edit"),
     Icon::create($plugin->getPluginURL()."/assets/task_blue.svg"),
-    array('data-dialog' => 1)
+    array('data-dialog' => "reload-on-close")
 );
 
 Sidebar::Get()->addWidget($actions);

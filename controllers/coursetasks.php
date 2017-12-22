@@ -10,5 +10,6 @@ class CoursetasksController extends PluginController {
         PageLayout::setTitle(_("Aufgaben"));
 
         $this->tasks = TPTask::findBySQL("1=1 ORDER BY name");
+        $this->statusgruppen = Statusgruppen::findBySeminar_id(Context::get()->id);
     }
 }

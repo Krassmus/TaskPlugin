@@ -1,0 +1,20 @@
+.tp_tasktable {
+    .caption h2 {
+        font-weight: normal;
+        border-bottom: none;
+    }
+    .percentage_indicator {
+        display: inline-block;
+        width: 30px;
+    }
+    .finish_indicator {
+        display: none;
+    }
+    input[type=range].max + .percentage_indicator {
+        display: none;
+    }
+    input[type=range].max + .percentage_indicator + .finish_indicator {
+        display: inline-block;
+        width: 30px;
+    }
+}
