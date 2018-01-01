@@ -1,0 +1,7 @@
+# Aufgaben in Stud.IP
+
+Es gibt schon einige Tools in Stud.IP, mit denen man Aufgaben einstellen und bearbeiten kann. Es gibt die Plugins DoIt, ElMo, PerLe und natürlich das "Aufgaben"-Plugin. Aber dummerweise ist keines dieser Plugins für die Selbstorganisation geeignet. Bisher wurden immer die Aufgaben verstanden als etwas, was Lehrende den Studierenden geben.
+
+Mit dem hier vorgestellten Plugin steht der Studierende im Fokus, um den es im Lernprozess ja auch eigentlich gehen soll. Der wichtigste Dreh- und Angelpunkt dieses Plugins ist das Widget auf der Startseite, mit dem man sieht, welche Aufgaben man noch zu tun hat. Die Aufgaben werden nach Dringlichkeit sortiert, sodass die Aufgaben mit der nächsten Deadline ganz oben stehen. Man kann direkt im Widget neue persönliche Aufgaben hinzufügen.
+
+Auch innerhalb von Veranstaltungen kann man das Aufgaben-Plugin hier nutzen. Jeder (also Lehrende wie Studierende) kann neue Aufgaben erstellen und beliebig sich oder andere den Aufgaben zuweisen. Der Vorteil ist, dass die Studierenden Stud.IP nicht nutzen, weil sie von ihren Lehrenden dazu gezwungen werden, sondern weil es ihnen einen Mehrwert bietet. Man kann in Gruppen gemeinsam arbeiten und sich gegenseitig die Aufgaben zuteilen.

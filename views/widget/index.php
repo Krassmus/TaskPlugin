@@ -17,7 +17,14 @@
             <? foreach ($tasks as $task) : ?>
                 <tr>
                     <td>
-                        <a href="<?= PluginEngine::getLink($plugin, array('cid' => $task['range_id']), "coursetasks/overview") ?>">
+                        <?
+                        if ($task['range_type'] === "course") {
+                            $url = PluginEngine::getURL($plugin, array('cid' => $task['range_id']), "coursetasks/overview");
+                        } else {
+                            $url = PluginEngine::getURL($plugin, array(), "tasks/details/".$task->getId());
+                        }
+                        ?>
+                        <a href="<?= URLHelper::getLink($url) ?>">
                             <?= htmlReady($task['name']) ?>
                         </a>
                     </td>

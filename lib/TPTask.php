@@ -10,6 +10,9 @@ class TPTask extends SimpleORMap {
             'thru_table' => 'tp_task_user',
             'order_by' => 'ORDER BY Vorname, Nachname'
         );
+        $config['has_many']['comments'] = array(
+            'class_name' => 'TPComment'
+        );
         parent::configure($config);
     }
 

@@ -9,7 +9,7 @@ class CoursetasksController extends PluginController {
         Navigation::activateItem("/course/tasks");
         PageLayout::setTitle(_("Aufgaben"));
 
-        $this->tasks = TPTask::findBySQL("1=1 ORDER BY name");
+        $this->tasks = TPTask::findBySQL("range_type = 'course' AND range_id = ? ORDER BY IF(deadline IS NOT NULL, '1', '0') DESC, deadline - UNIX_TIMESTAMP() ASC, name ASC", array(Context::get()->id));
         $this->statusgruppen = Statusgruppen::findBySeminar_id(Context::get()->id);
     }
 }

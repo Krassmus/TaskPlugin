@@ -1,13 +1,35 @@
 <?php
 
 require_once __DIR__."/lib/TPTask.php";
+require_once __DIR__."/lib/TPComment.php";
 
-class TaskPlugin extends StudIPPlugin implements StandardPlugin, HomepagePlugin, PortalPlugin
+class TaskPlugin extends StudIPPlugin implements StandardPlugin, HomepagePlugin, PortalPlugin, SystemPlugin
 {
     public function __construct()
     {
         parent::__construct();
         $this->addStylesheet("assets/tasks.less");
+        if (UpdateInformation::isCollecting()
+            && stripos(Request::get("page"), "plugins.php/taskplugin/tasks/details/") !== false) {
+            $data = Request::getArray("page_info");
+            $last_update = Request::get("server_timestamp", time() - 30);
+            $task_id = $data['TP']['task_id'];
+            $output = array('comments' => array());
+            $comments = TPComment::findBySQL("task_id = :task_id AND mkdate >= :last_update ORDER BY mkdate ASC", array(
+                'last_update' => $last_update,
+                'task_id' => $task_id
+            ));
+            $tf = new Flexi_TemplateFactory(__DIR__ . "/views");
+            foreach ($comments as $comment) {
+                $template = $tf->open("tasks/_comment.php");
+                $template->set_attribute('comment', $comment);
+                $output['comments'][] = array(
+                    'comment_id' => $comment->getId(),
+                    'html' => $template->render()
+                );
+            }
+            UpdateInformation::setInformation("TP.update", $output);
+        }
     }
 
     function getInfoTemplate($course_id) {}
@@ -50,6 +72,10 @@ class TaskPlugin extends StudIPPlugin implements StandardPlugin, HomepagePlugin,
         $template = $tf->open("widget/index");
         $template->tasks = $tasks;
         $template->title = _("Aufgaben");
+        $add = new Navigation(_("Aufgabe hinzufügen"), PluginEngine::getURL($this, array('range_type' => "user", 'range_id' => $GLOBALS['user']->id), "tasks/edit"));
+        $add->setImage(Icon::create("add", "clickable"));
+        $add->setLinkAttributes(array('data-dialog' => "reload-on-close"));
+        $template->icons = array($add);
         $template->plugin = $this;
         return $template;
     }

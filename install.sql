@@ -1,7 +1,7 @@
 CREATE TABLE `tp_tasks` (
   `task_id` varchar(32) NOT NULL DEFAULT '',
   `name` varchar(150) NOT NULL DEFAULT '',
-  `description` text ,
+  `description` text,
   `for_all` tinyint(3) DEFAULT NULL,
   `range_id` varchar(32) NOT NULL DEFAULT '',
   `range_type` varchar(20) NOT NULL DEFAULT '',
@@ -20,4 +20,14 @@ CREATE TABLE `tp_task_user` (
   `task_id` varchar(32) NOT NULL DEFAULT '',
   `user_id` varchar(32) NOT NULL,
   PRIMARY KEY (`task_id`,`user_id`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
+
+CREATE TABLE `tp_comments` (
+  `comment_id` varchar(32) NOT NULL DEFAULT '',
+  `task_id` varchar(32) DEFAULT NULL,
+  `comment` text,
+  `user_id` varchar(32) DEFAULT NULL,
+  `chdate` int(11) DEFAULT NULL,
+  `mkdate` int(11) DEFAULT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB;

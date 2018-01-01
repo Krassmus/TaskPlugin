@@ -11,8 +11,13 @@
     <tbody>
         <? if (count($tasks)) : ?>
             <? foreach ($tasks as $task) : ?>
-                <? if (!$task->statusgruppe_id) : ?>
+                <? if (!$task->statusgruppe_id && !$task->parent_id) : ?>
                     <?= $this->render_partial("tasks/_task_row.php", array('task' => $task)) ?>
+                    <? foreach ($tasks as $child) : ?>
+                        <? if ($child->parent_id === $task->getId()) : ?>
+                            <?= $this->render_partial("tasks/_task_row.php", array('task' => $child, 'child' => 1)) ?>
+                        <? endif ?>
+                    <? endforeach ?>
                 <? endif ?>
             <? endforeach ?>
         <? else : ?>
@@ -46,6 +51,11 @@
             <? foreach ($tasks as $task) : ?>
                 <? if ($task->statusgruppe_id === $statusgruppe->getId()) : ?>
                     <?= $this->render_partial("tasks/_task_row.php", array('task' => $task)) ?>
+                    <? foreach ($tasks as $child) : ?>
+                        <? if ($child->parent_id === $task->getId()) : ?>
+                            <?= $this->render_partial("tasks/_task_row.php", array('task' => $child, 'child' => 1)) ?>
+                        <? endif ?>
+                    <? endforeach ?>
                 <? endif ?>
             <? endforeach ?>
         </tbody>
